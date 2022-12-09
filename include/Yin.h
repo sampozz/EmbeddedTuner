@@ -1,9 +1,9 @@
-#ifndef Yin_h
-#define Yin_h
+#ifndef _YIN_H_
+#define _YIN_H_
 
 #include <stdint.h>
+#include "embedded_tuner/include/peripherals.h"
 
-#define YIN_SAMPLING_RATE 16000
 #define YIN_DEFAULT_THRESHOLD 0.15
 
 /**
@@ -13,7 +13,8 @@
 typedef struct _Yin {
 	int16_t bufferSize;			/**< Size of the audio buffer to be analysed */
 	int16_t halfBufferSize;		/**< Half the buffer length */
-	float yinBuffer[512];		/**< Buffer that stores the results of the intermediate processing steps of the algorithm */
+	int16_t sample_frequency;
+	float yinBuffer[SAMPLE_LENGTH / 2];		/**< Buffer that stores the results of the intermediate processing steps of the algorithm */
 	float probability;		/**< Probability that the pitch found is correct as a decimal (i.e 0.85 is 85%) */
 	float threshold;		/**< Allowed uncertainty in the result as a decimal (i.e 0.15 is 15%) */
 } Yin;
@@ -24,7 +25,7 @@ typedef struct _Yin {
  * @param bufferSize Length of the audio buffer to analyse
  * @param threshold  Allowed uncertainty (e.g 0.05 will return a pitch with ~95% probability)
  */
-void Yin_init(Yin *yin, int16_t bufferSize, float threshold);
+void Yin_init(Yin *yin, int16_t bufferSize, int16_t sample_frequency, float threshold);
 
 /**
  * Runs the Yin pitch detection algortihm

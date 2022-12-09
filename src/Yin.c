@@ -1,6 +1,6 @@
+#include <embedded_tuner/include/yin.h>
 #include <stdint.h> /* For standard interger types (int16_t) */
 #include <stdlib.h> /* For call to malloc */
-#include "embedded_tuner/include/Yin.h"
 
 /* ------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------- PRIVATE FUNCTIONS
@@ -166,10 +166,11 @@ float Yin_parabolicInterpolation(Yin *yin, int16_t tauEstimate) {
  * @param bufferSize Length of the audio buffer to analyse
  * @param threshold  Allowed uncertainty (e.g 0.05 will return a pitch with ~95% probability)
  */
-void Yin_init(Yin *yin, int16_t bufferSize, float threshold){
+void Yin_init(Yin *yin, int16_t bufferSize, int16_t sample_frequency, float threshold){
 	/* Initialise the fields of the Yin structure passed in */
 	yin->bufferSize = bufferSize;
 	yin->halfBufferSize = bufferSize / 2;
+	yin->sample_frequency = sample_frequency;
 	yin->probability = 0.0;
 	yin->threshold = threshold;
 
@@ -203,7 +204,7 @@ float Yin_getPitch(Yin *yin, int16_t* buffer){
 	
 	/* Step 5: Interpolate the shift value (tau) to improve the pitch estimate. */
 	if(tauEstimate != -1){
-		pitchInHertz = YIN_SAMPLING_RATE / Yin_parabolicInterpolation(yin, tauEstimate);
+		pitchInHertz = yin->sample_frequency / Yin_parabolicInterpolation(yin, tauEstimate);
 	}
 	
 	return pitchInHertz;
