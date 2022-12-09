@@ -67,10 +67,20 @@ int main(void)
         char note[3];
         note_name(pitch, note);
 
+        double max_pitch, min_pitch;
+        note_pitch_range(pitch, &max_pitch, &min_pitch);
+        int cursor_pos = 128 * (pitch - min_pitch) / (max_pitch - min_pitch);
+
         char string[20];
         sprintf(string, "%s", note);
 
         Graphics_clearDisplay(&g_sContext);
-        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, 3, 48, 70, OPAQUE_TEXT);
+        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, 5, 48, 50, OPAQUE_TEXT);
+
+        for (i = 0; i < 10; i++)
+        {
+            Graphics_drawPixel(&g_sContext, cursor_pos, 80 + i);
+            Graphics_drawPixel(&g_sContext, cursor_pos + 1, 80 + i);
+        }
     }
 }
