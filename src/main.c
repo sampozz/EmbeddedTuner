@@ -61,6 +61,7 @@ int main(void)
         char note[3];
         note_name(pitch, note);
 
+<<<<<<< HEAD
         double max_pitch, min_pitch;
         note_pitch_range(pitch, &max_pitch, &min_pitch);
         int cursor_pos = 128 * (pitch - min_pitch) / (max_pitch - min_pitch);
@@ -82,6 +83,13 @@ int main(void)
         Graphics_drawStringCentered(&g_sContext, (int8_t*) string, 8, 64, 70,
         OPAQUE_TEXT);
 
+=======
+        char string[20];
+        sprintf(string, "%s", note);
+
+        Graphics_clearDisplay(&g_sContext);
+        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, 3, 48, 70, OPAQUE_TEXT);
+>>>>>>> parent of fb23c50 (added simple cursor for tuning precision)
     }
 }
 
