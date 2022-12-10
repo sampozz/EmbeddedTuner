@@ -1,6 +1,12 @@
 #ifndef _TUNER_H_
 #define _TUNER_H_
 
+#include <ti/devices/msp432p4xx/inc/msp.h>
+
+void dsp_init(void);
+
+double pitch_detection(int16_t (*data_array)[]);
+
 /**
  * Return the exact pitch of the note idetified by note_number,
  * where A4 = 0, A# = 1, G# = -1

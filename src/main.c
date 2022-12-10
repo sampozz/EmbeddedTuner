@@ -9,8 +9,8 @@
 #include <math.h>
 
 /* processing buffers*/
-float hann[SAMPLE_LENGTH];
 int16_t (*data_array)[SAMPLE_LENGTH];
+extern uint16_t resultsBuffer;
 
 void _hw_init(void)
 {
@@ -22,47 +22,41 @@ void _hw_init(void)
     MAP_FlashCtl_setWaitState(FLASH_BANK0, 2);
     MAP_FlashCtl_setWaitState(FLASH_BANK1, 2);
 
+    init_adc();
+
+    init_gpio();
     init_timer();
-    init_microphone();
     init_dma();
     init_display();
 
+    /* Enabling Interrupts */
+//    Interrupt_enableInterrupt(INT_ADC14);
+    Interrupt_enableInterrupt(INT_PORT5);
+    Interrupt_enableInterrupt(INT_DMA_INT1);
+    Interrupt_enableMaster();
+
     ADC14_enableConversion();
+    ADC14_toggleConversionTrigger();
+    GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
 }
 
 int main(void)
 {
     _hw_init();
+    dsp_init();
 
-    // Initialize Hann Window
-    int n;
-    for(n = 0; n < SAMPLE_LENGTH; n++)
-    {
-        hann[n] = 0.5f - 0.5f * cosf((2 * M_PI * n) / (SAMPLE_LENGTH - 1));
-    }
-
-    /*******************/
-    /* PITCH DETECTION */
-    /*******************/
-
-    double pitch;
-
-    while(1)
+    while (1)
     {
         PCM_gotoLPM0();
-        int i = 0;
 
-        /* Computer real FFT using the completed data buffer */
-        for(i = 0; i < SAMPLE_LENGTH; i++)
-        {
-            (*data_array)[i] = (int16_t)(hann[i] * (*data_array)[i]);
-        }
+        double pitch = pitch_detection(data_array);
 
-        Yin yin;
-        Yin_init(&yin, SAMPLE_LENGTH, SAMPLE_FREQUENCY, 0.05);
-        pitch = Yin_getPitch(&yin, *data_array);
+        /* Update display */
 
-        if (pitch == -1) continue;
+        char string[20];
+
+        if (pitch == -1)
+            continue;
 
         char note[3];
         note_name(pitch, note);
@@ -71,16 +65,26 @@ int main(void)
         note_pitch_range(pitch, &max_pitch, &min_pitch);
         int cursor_pos = 128 * (pitch - min_pitch) / (max_pitch - min_pitch);
 
-        char string[20];
         sprintf(string, "%s", note);
 
         Graphics_clearDisplay(&g_sContext);
-        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, 5, 48, 50, OPAQUE_TEXT);
+        Graphics_drawStringCentered(&g_sContext, (int8_t*) string, 5, 48, 50,
+        OPAQUE_TEXT);
 
+        int i;
         for (i = 0; i < 10; i++)
         {
             Graphics_drawPixel(&g_sContext, cursor_pos, 80 + i);
             Graphics_drawPixel(&g_sContext, cursor_pos + 1, 80 + i);
         }
+
+        sprintf(string, "Y: %5d", resultsBuffer);
+        Graphics_drawStringCentered(&g_sContext, (int8_t*) string, 8, 64, 70,
+        OPAQUE_TEXT);
+
     }
 }
+
+
+
+

@@ -15,6 +15,7 @@ static DMA_ControlTable MSP_EXP432P401RLP_DMAControlTable[32];
 
 int16_t data_array1[SAMPLE_LENGTH];
 int16_t data_array2[SAMPLE_LENGTH];
+uint16_t resultsBuffer;
 
 void init_dma(void)
 {
@@ -50,10 +51,8 @@ void init_dma(void)
 
     /* Assigning/Enabling Interrupts */
     DMA_assignInterrupt(DMA_INT1, 7);
-    Interrupt_enableInterrupt(INT_DMA_INT1);
     DMA_assignChannel(DMA_CH7_ADC14);
     DMA_clearInterruptFlag(7);
-    Interrupt_enableMaster();
 
     /* Now that the DMA is primed and setup, enabling the channels. The ADC14
      * hardware should take over and transfer/receive all bytes */

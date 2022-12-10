@@ -1,7 +1,31 @@
 #include "embedded_tuner/include/tuner.h"
+#include "embedded_tuner/include/peripherals.h"
+#include "embedded_tuner/include/yin.h"
 #include <math.h>
 
+float hann[SAMPLE_LENGTH];
 const char notes[12][3] = {"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"};
+
+void dsp_init(void)
+{
+    // Initialize Hann Window
+    int n;
+    for (n = 0; n < SAMPLE_LENGTH; n++)
+        hann[n] = 0.5f - 0.5f * cosf((2 * M_PI * n) / (SAMPLE_LENGTH - 1));
+}
+
+double pitch_detection(int16_t (*data_array)[])
+{
+    /* Apply Hann window to signal */
+    int i;
+    for (i = 0; i < SAMPLE_LENGTH; i++)
+        (*data_array)[i] = (int16_t) (hann[i] * (*data_array)[i]);
+
+    /* Compute yin algorithm */
+    Yin yin;
+    Yin_init(&yin, SAMPLE_LENGTH, SAMPLE_FREQUENCY, 0.05);
+    return Yin_getPitch(&yin, *data_array);
+}
 
 double note_pitch(int note_number)
 {
