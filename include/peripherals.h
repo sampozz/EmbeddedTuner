@@ -18,6 +18,8 @@
 #define BUZZER_CLK (SMCLK_FREQUENCY / 64)
 
 void init_timer(void);
+void debounce_button(void);
+bool is_debouncing(void);
 
 /* GPIO */
 

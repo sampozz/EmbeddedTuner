@@ -39,5 +39,21 @@ void init_timer(void)
 
     /* Buzzer */
     Timer_A_generatePWM(TIMER_A0_BASE, &buzzer_pwmConfig);
+
+    /* Debouncer */
+    Timer32_initModule(TIMER32_0_BASE, TIMER32_PRESCALER_1, TIMER32_32BIT, TIMER32_PERIODIC_MODE);
+    Timer32_setCount(TIMER32_0_BASE, SMCLK_FREQUENCY / 4);
+    Timer32_startTimer(TIMER32_0_BASE, true);
+}
+
+bool is_debouncing(void)
+{
+    return Timer32_getValue(TIMER32_0_BASE) != 0;
+}
+
+void debounce_button(void)
+{
+    Timer32_setCount(TIMER32_0_BASE, SMCLK_FREQUENCY / 4);
+    Timer32_startTimer(TIMER32_0_BASE, true);
 }
 

@@ -42,13 +42,17 @@ void PORT3_IRQHandler(void)
 {
     uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P3);
     GPIO_clearInterruptFlag(GPIO_PORT_P3, status);
+    if (is_debouncing()) return;
 
     if (status & GPIO_PIN5) {
-        /* Decrement reference frequency */
-        if (mode == 0) reference_pitch--;
-        /* Lower pitch buzzer */
+        debounce_button();
+        if (mode == 0) {
+            /* Decrement reference frequency */
+            reference_pitch--;
+        }
         else
         {
+            /* Lower pitch buzzer */
             buzzer_note_number--;
             play_buzzer();
         }
@@ -59,8 +63,10 @@ void PORT4_IRQHandler(void)
 {
     uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4);
     GPIO_clearInterruptFlag(GPIO_PORT_P4, status);
+    if (is_debouncing()) return;
 
     if (status & GPIO_PIN1) {
+        debounce_button();
         /* Toggle buzzer */
         if (mode == 0)
         {
@@ -80,13 +86,18 @@ void PORT5_IRQHandler(void)
 {
     uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P5);
     GPIO_clearInterruptFlag(GPIO_PORT_P5, status);
+    if (is_debouncing()) return;
 
     if (status & GPIO_PIN1) {
-        /* Increment reference frequency */
-        if (mode == 0) reference_pitch++;
-        /* Higher pitch buzzer */
+        debounce_button();
+        if (mode == 0)
+        {
+            /* Increment reference frequency */
+            reference_pitch++;
+        }
         else
         {
+            /* Higher pitch buzzer */
             buzzer_note_number++;
             play_buzzer();
         }
