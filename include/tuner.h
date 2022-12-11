@@ -3,7 +3,6 @@
 
 #include <ti/devices/msp432p4xx/inc/msp.h>
 
-
 void init_hann_window(void);
 
 double pitch_detection(int16_t (*data_array)[]);
@@ -15,6 +14,10 @@ double pitch_detection(int16_t (*data_array)[]);
 double note_pitch(int note_number);
 
 int note_number(double pitch);
+
+void play_buzzer();
+
+void stop_buzzer();
 
 /**
  * Return the index of the nearest note to pitch

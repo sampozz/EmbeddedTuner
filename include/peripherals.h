@@ -15,12 +15,14 @@
 
 #define SMCLK_FREQUENCY     48000000
 #define SAMPLE_FREQUENCY    16000
+#define BUZZER_CLK (SMCLK_FREQUENCY / 64)
 
 void init_timer(void);
 
 /* GPIO */
 
 void init_gpio(void);
+void set_buzzer(int freq);
 
 /* ADC */
 

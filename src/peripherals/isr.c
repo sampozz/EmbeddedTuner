@@ -1,5 +1,6 @@
 #include <embedded_tuner/include/yin.h>
 #include "embedded_tuner/include/peripherals.h"
+#include "embedded_tuner/include/tuner.h"
 
 extern int16_t (*data_array)[];
 extern int16_t data_array1[];
@@ -7,6 +8,7 @@ extern int16_t data_array2[];
 
 extern int mode; // 0: tuner, 1: buzzer
 extern double reference_pitch;
+extern int buzzer_note_number;
 
 /* Completion interrupt for ADC14 MEM0 */
 void DMA_INT1_IRQHandler(void)
@@ -45,6 +47,11 @@ void PORT3_IRQHandler(void)
         /* Decrement reference frequency */
         if (mode == 0) reference_pitch--;
         /* Lower pitch buzzer */
+        else
+        {
+            buzzer_note_number--;
+            play_buzzer();
+        }
     }
 }
 
@@ -55,6 +62,17 @@ void PORT4_IRQHandler(void)
 
     if (status & GPIO_PIN1) {
         /* Toggle buzzer */
+        if (mode == 0)
+        {
+            mode = 1;
+            buzzer_note_number = 0;
+            play_buzzer();
+        }
+        else
+        {
+            mode = 0;
+            stop_buzzer();
+        }
     }
 }
 
@@ -67,5 +85,10 @@ void PORT5_IRQHandler(void)
         /* Increment reference frequency */
         if (mode == 0) reference_pitch++;
         /* Higher pitch buzzer */
+        else
+        {
+            buzzer_note_number++;
+            play_buzzer();
+        }
     }
 }

@@ -6,6 +6,7 @@
 const char notes[12][3] = {"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"};
 float hann[SAMPLE_LENGTH];
 double reference_pitch = 440.0;
+int buzzer_note_number = 0;
 
 void init_hann_window(void)
 {
@@ -37,6 +38,16 @@ int note_number(double pitch)
     if (index < 0)
         return index - 0.5;
     return index + 0.5;
+}
+
+void play_buzzer()
+{
+    set_buzzer(note_pitch(buzzer_note_number));
+}
+
+void stop_buzzer()
+{
+    set_buzzer(0);
 }
 
 int note_index(double pitch)

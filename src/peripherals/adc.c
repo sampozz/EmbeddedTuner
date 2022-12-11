@@ -7,7 +7,7 @@ void init_adc(void)
     ADC14_enableModule();
     ADC14_initModule(ADC_CLOCKSOURCE_MCLK, ADC_PREDIVIDER_1, ADC_DIVIDER_1, 0);
 
-    ADC14_setSampleHoldTrigger(ADC_TRIGGER_SOURCE1, false);
+    ADC14_setSampleHoldTrigger(ADC_TRIGGER_SOURCE3, false);
 
     /* Configuring ADC Memory */
     ADC14_configureSingleSampleMode(ADC_MEM0, true);

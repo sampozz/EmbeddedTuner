@@ -1,7 +1,7 @@
 #include "embedded_tuner/include/peripherals.h"
 
 /* Timer_A PWM Configuration Parameter */
-Timer_A_PWMConfig pwmConfig =
+const Timer_A_PWMConfig adc_pwmConfig =
 {
     TIMER_A_CLOCKSOURCE_SMCLK,
     TIMER_A_CLOCKSOURCE_DIVIDER_1,
@@ -9,6 +9,16 @@ Timer_A_PWMConfig pwmConfig =
     TIMER_A_CAPTURECOMPARE_REGISTER_1,
     TIMER_A_OUTPUTMODE_SET_RESET,
     (SMCLK_FREQUENCY / SAMPLE_FREQUENCY) / 2
+};
+
+const Timer_A_PWMConfig buzzer_pwmConfig =
+{
+    TIMER_A_CLOCKSOURCE_SMCLK,     // SMCLK = 48 MHz
+    TIMER_A_CLOCKSOURCE_DIVIDER_64, // SMCLK / 64 = 750 kHz
+    0,
+    TIMER_A_CAPTURECOMPARE_REGISTER_4,
+    TIMER_A_OUTPUTMODE_TOGGLE_SET,
+    500
 };
 
 void init_timer(void)
@@ -24,6 +34,10 @@ void init_timer(void)
     MAP_CS_initClockSignal(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_1);
     MAP_CS_initClockSignal(CS_ACLK, CS_REFOCLK_SELECT, CS_CLOCK_DIVIDER_1);
 
-    Timer_A_generatePWM(TIMER_A0_BASE, &pwmConfig);
+    /* ADC trigger */
+    Timer_A_generatePWM(TIMER_A1_BASE, &adc_pwmConfig);
+
+    /* Buzzer */
+    Timer_A_generatePWM(TIMER_A0_BASE, &buzzer_pwmConfig);
 }
 
