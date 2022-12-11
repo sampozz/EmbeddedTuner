@@ -18,10 +18,13 @@
 
 void init_timer(void);
 
+/* GPIO */
+
+void init_gpio(void);
 
 /* ADC */
 
-void init_microphone(void);
+void init_adc(void);
 
 
 /* DMA */

@@ -1,9 +1,12 @@
+#include <embedded_tuner/include/yin.h>
 #include "embedded_tuner/include/peripherals.h"
-#include "embedded_tuner/include/yin.h"
 
 extern int16_t (*data_array)[];
 extern int16_t data_array1[];
 extern int16_t data_array2[];
+
+extern int mode; // 0: tuner, 1: buzzer
+extern double reference_pitch;
 
 /* Completion interrupt for ADC14 MEM0 */
 void DMA_INT1_IRQHandler(void)
@@ -30,5 +33,39 @@ void DMA_INT1_IRQHandler(void)
                                UDMA_MODE_PINGPONG, (void*) &ADC14->MEM[0],
                                data_array2, SAMPLE_LENGTH);
         data_array = &data_array2;
+    }
+}
+
+void PORT3_IRQHandler(void)
+{
+    uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P3);
+    GPIO_clearInterruptFlag(GPIO_PORT_P3, status);
+
+    if (status & GPIO_PIN5) {
+        /* Decrement reference frequency */
+        if (mode == 0) reference_pitch--;
+        /* Lower pitch buzzer */
+    }
+}
+
+void PORT4_IRQHandler(void)
+{
+    uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P4);
+    GPIO_clearInterruptFlag(GPIO_PORT_P4, status);
+
+    if (status & GPIO_PIN1) {
+        /* Toggle buzzer */
+    }
+}
+
+void PORT5_IRQHandler(void)
+{
+    uint_fast16_t status = GPIO_getEnabledInterruptStatus(GPIO_PORT_P5);
+    GPIO_clearInterruptFlag(GPIO_PORT_P5, status);
+
+    if (status & GPIO_PIN1) {
+        /* Increment reference frequency */
+        if (mode == 0) reference_pitch++;
+        /* Higher pitch buzzer */
     }
 }

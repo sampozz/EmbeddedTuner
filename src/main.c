@@ -5,12 +5,14 @@
 #include "embedded_tuner/include/peripherals.h"
 #include "embedded_tuner/include/tuner.h"
 #include <stdio.h>
-
 #include <math.h>
 
 /* processing buffers*/
-float hann[SAMPLE_LENGTH];
 int16_t (*data_array)[SAMPLE_LENGTH];
+
+int mode = 0; // 0: tuner, 1: buzzer
+
+extern double reference_pitch;
 
 void _hw_init(void)
 {
@@ -23,9 +25,17 @@ void _hw_init(void)
     MAP_FlashCtl_setWaitState(FLASH_BANK1, 2);
 
     init_timer();
-    init_microphone();
+    init_gpio();
+    init_adc();
     init_dma();
     init_display();
+
+    /* Interrupts enable */
+    Interrupt_enableInterrupt(INT_PORT3);
+    Interrupt_enableInterrupt(INT_PORT4);
+    Interrupt_enableInterrupt(INT_PORT5);
+    Interrupt_enableInterrupt(INT_DMA_INT1);
+    Interrupt_enableMaster();
 
     ADC14_enableConversion();
 }
@@ -33,49 +43,36 @@ void _hw_init(void)
 int main(void)
 {
     _hw_init();
-
-    // Initialize Hann Window
-    int n;
-    for(n = 0; n < SAMPLE_LENGTH; n++)
-    {
-        hann[n] = 0.5f - 0.5f * cosf((2 * M_PI * n) / (SAMPLE_LENGTH - 1));
-    }
-
-    /*******************/
-    /* PITCH DETECTION */
-    /*******************/
-
-    double pitch;
+    init_hann_window();
 
     while(1)
     {
         PCM_gotoLPM0();
-        int i = 0;
+        int i;
 
-        /* Computer real FFT using the completed data buffer */
-        for(i = 0; i < SAMPLE_LENGTH; i++)
-        {
-            (*data_array)[i] = (int16_t)(hann[i] * (*data_array)[i]);
-        }
+        double pitch = pitch_detection(data_array);
 
-        Yin yin;
-        Yin_init(&yin, SAMPLE_LENGTH, SAMPLE_FREQUENCY, 0.05);
-        pitch = Yin_getPitch(&yin, *data_array);
+        Graphics_clearDisplay(&g_sContext);
+        char string[20], note[3];
+
+        /* Display reference pitch */
+
+        sprintf(string, "Ref: %2f", reference_pitch);
+        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, AUTO_STRING_LENGTH, 20, 20, OPAQUE_TEXT);
+
+        /* Display note */
 
         if (pitch == -1) continue;
-
-        char note[3];
         note_name(pitch, note);
+        sprintf(string, "%s", note);
+
+        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, 5, 48, 50, OPAQUE_TEXT);
+
+        /* Display tuning bar */
 
         double max_pitch, min_pitch;
         note_pitch_range(pitch, &max_pitch, &min_pitch);
         int cursor_pos = 128 * (pitch - min_pitch) / (max_pitch - min_pitch);
-
-        char string[20];
-        sprintf(string, "%s", note);
-
-        Graphics_clearDisplay(&g_sContext);
-        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, 5, 48, 50, OPAQUE_TEXT);
 
         for (i = 0; i < 10; i++)
         {

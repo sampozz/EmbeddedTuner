@@ -1,5 +1,5 @@
+#include <embedded_tuner/include/yin.h>
 #include "embedded_tuner/include/peripherals.h"
-#include "embedded_tuner/include/yin.h"
 
 /* DMA Control Table */
 #if defined(__TI_COMPILER_VERSION__)
@@ -50,10 +50,8 @@ void init_dma(void)
 
     /* Assigning/Enabling Interrupts */
     DMA_assignInterrupt(DMA_INT1, 7);
-    Interrupt_enableInterrupt(INT_DMA_INT1);
     DMA_assignChannel(DMA_CH7_ADC14);
     DMA_clearInterruptFlag(7);
-    Interrupt_enableMaster();
 
     /* Now that the DMA is primed and setup, enabling the channels. The ADC14
      * hardware should take over and transfer/receive all bytes */

@@ -1,5 +1,26 @@
 #include "embedded_tuner/include/peripherals.h"
 
+
+void init_gpio(void)
+{
+    /* Configuring Microphone GPIO 4.3 A10 */
+    GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P4, GPIO_PIN3,
+                                               GPIO_TERTIARY_MODULE_FUNCTION);
+
+    /* Configuring user button S1 */
+    GPIO_setAsInputPin(GPIO_PORT_P5, GPIO_PIN1);
+    GPIO_enableInterrupt(GPIO_PORT_P5, GPIO_PIN1);
+
+    /* Configuring user button S2 */
+    GPIO_setAsInputPin(GPIO_PORT_P3, GPIO_PIN5);
+    GPIO_enableInterrupt(GPIO_PORT_P3, GPIO_PIN5);
+
+    /* Configuring joystick button */
+    GPIO_setAsInputPin(GPIO_PORT_P4, GPIO_PIN1);
+    GPIO_enableInterrupt(GPIO_PORT_P4, GPIO_PIN1);
+}
+
+
 void init_display(void)
 {
     /* Initializes display */
