@@ -23,6 +23,11 @@ void init_gpio(void)
                                                 GPIO_PRIMARY_MODULE_FUNCTION);
 }
 
+void set_buzzer(int freq)
+{
+    TIMER_A0->CCR[0] = BUZZER_CLK / freq;
+}
+
 void init_display(void)
 {
     /* Initializes display */
@@ -42,7 +47,38 @@ void init_display(void)
     Graphics_clearDisplay(&g_sContext);
 }
 
-void set_buzzer(int freq)
+void draw_line_v(int32_t x, int32_t y1, int32_t y2, int32_t color)
 {
-    TIMER_A0->CCR[0] = BUZZER_CLK / freq;
+    Graphics_setForegroundColor(&g_sContext, color);
+    Graphics_drawLineV(&g_sContext, x, y1, y2);
 }
+
+void draw_string(char* string, int32_t x, int32_t y, int32_t color, int16_t centered, int16_t big)
+{
+    // Clear overlapping strings
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    Graphics_Rectangle rect = {x - 24, y - 24, x + 24, y + 24};
+    Graphics_fillRectangle(&g_sContext, &rect);
+    Graphics_setForegroundColor(&g_sContext, color);
+
+    if (big)
+    {
+        GrContextFontSet(&g_sContext, &g_sFontCmss24);
+    }
+    else
+    {
+        GrContextFontSet(&g_sContext, &g_sFontFixed6x8);
+    }
+    if (centered)
+    {
+        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, AUTO_STRING_LENGTH, x, y, OPAQUE_TEXT);
+    }
+    else
+    {
+        Graphics_drawString(&g_sContext, (int8_t *) string, AUTO_STRING_LENGTH, x, y, OPAQUE_TEXT);
+    }
+}
+
+
+
+

@@ -3,11 +3,12 @@
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 #include <ti/grlib/grlib.h>
 #include "embedded_tuner/include/peripherals.h"
+#include "embedded_tuner/include/gui.h"
 #include "embedded_tuner/include/tuner.h"
 #include <stdio.h>
 #include <math.h>
 
-/* processing buffers*/
+/* processing buffer */
 int16_t (*data_array)[SAMPLE_LENGTH];
 
 int mode = 0; // 0: tuner, 1: buzzer
@@ -48,36 +49,27 @@ int main(void)
     while(1)
     {
         PCM_gotoLPM0();
-        int i;
 
         double pitch = pitch_detection(data_array);
 
-        Graphics_clearDisplay(&g_sContext);
+        draw_tuner_lines();
         char string[20], note[3];
 
         /* Display reference pitch */
 
-        sprintf(string, "Ref: %2f", reference_pitch);
-        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, AUTO_STRING_LENGTH, 20, 20, OPAQUE_TEXT);
+        draw_reference_pitch(reference_pitch);
 
         /* Display note */
 
         if (pitch == -1) continue;
         note_name(pitch, note);
-        sprintf(string, "%s", note);
-
-        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, 5, 48, 50, OPAQUE_TEXT);
+        draw_note(note);
 
         /* Display tuning bar */
 
         double max_pitch, min_pitch;
         note_pitch_range(pitch, &max_pitch, &min_pitch);
         int cursor_pos = 128 * (pitch - min_pitch) / (max_pitch - min_pitch);
-
-        for (i = 0; i < 10; i++)
-        {
-            Graphics_drawPixel(&g_sContext, cursor_pos, 80 + i);
-            Graphics_drawPixel(&g_sContext, cursor_pos + 1, 80 + i);
-        }
+        draw_tuner_cursor(cursor_pos);
     }
 }

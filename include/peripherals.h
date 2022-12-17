@@ -10,7 +10,6 @@
 #include <ti/grlib/grlib.h>
 #include "embedded_tuner/include/LcdDriver/Crystalfontz128x128_ST7735.h"
 
-
 /* Timers */
 
 #define SMCLK_FREQUENCY     48000000
@@ -30,18 +29,18 @@ void set_buzzer(int freq);
 
 void init_adc(void);
 
-
 /* DMA */
 
 #define SAMPLE_LENGTH    1024
 
 void init_dma(void);
 
-
 /* Graphic library */
 
 Graphics_Context g_sContext;
 
 void init_display(void);
+void draw_line_v(int32_t x, int32_t y1, int32_t y2, int32_t color);
+void draw_string(char* string, int32_t x, int32_t y, int32_t color, int16_t centered, int16_t big);
 
 #endif /* _PERIPHERALS_H_ */
