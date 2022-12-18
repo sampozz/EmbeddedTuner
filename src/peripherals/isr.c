@@ -9,6 +9,7 @@ extern int16_t data_array2[];
 extern int16_t mode; // 0: tuner, 1: buzzer
 extern double reference_pitch;
 extern int16_t buzzer_note_number;
+extern int16_t display_updated;
 
 /* Completion interrupt for ADC14 MEM0 */
 void DMA_INT1_IRQHandler(void)
@@ -46,6 +47,7 @@ void PORT3_IRQHandler(void)
 
     if (status & GPIO_PIN5) {
         debounce_button();
+        display_updated = 1;
         if (mode == 0) {
             /* Decrement reference frequency */
             reference_pitch--;
@@ -67,6 +69,7 @@ void PORT4_IRQHandler(void)
 
     if (status & GPIO_PIN1) {
         debounce_button();
+        display_updated = 1;
         /* Toggle buzzer */
         if (mode == 0)
         {
@@ -90,6 +93,7 @@ void PORT5_IRQHandler(void)
 
     if (status & GPIO_PIN1) {
         debounce_button();
+        display_updated = 1;
         if (mode == 0)
         {
             /* Increment reference frequency */

@@ -63,7 +63,7 @@ void draw_string(char* string, int32_t x, int32_t y, int32_t color, int16_t cent
 {
     // Clear overlapping strings
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-    Graphics_Rectangle rect = {x - 24, y - 24, x + 24, y + 24};
+    Graphics_Rectangle rect = {0, y - 24, 128, y + 24};
     Graphics_fillRectangle(&g_sContext, &rect);
     Graphics_setForegroundColor(&g_sContext, color);
 

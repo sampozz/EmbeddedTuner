@@ -31,5 +31,11 @@ void draw_reference_pitch(int32_t pitch);
  */
 void draw_note(char note[]);
 
+/**
+ * Draw the string "Playing buzzer"
+ * @param note The note being played by the buzzer
+ */
+void draw_buzzer_mode(char note[]);
+
 
 #endif /* _GUI_H_ */

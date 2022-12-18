@@ -11,6 +11,7 @@
 /* processing buffer */
 int16_t (*data_array)[SAMPLE_LENGTH];
 int16_t mode = 0; // 0: tuner, 1: buzzer
+int16_t display_updated = 1;
 int16_t buzzer_note_number = 0;
 
 extern double reference_pitch;
@@ -50,28 +51,46 @@ int main(void)
     {
         PCM_gotoLPM0();
 
-        double pitch = pitch_detection(data_array);
-
-        draw_tuner_lines();
         char note[3];
 
-        /* Display reference pitch */
+        /* GUI updates on display */
+        if (display_updated)
+        {
+            display_updated = 0;
+            draw_reference_pitch(reference_pitch);
 
-        draw_reference_pitch(reference_pitch);
-
-        /* Display note */
-
-        note_name(pitch, note);
-        if (pitch == -1) {
-            strcpy(note, " ");
+            if (mode == 1) {
+                /* Display playing note name */
+                double pitch = note_pitch(buzzer_note_number);
+                note_name(pitch, note);
+                draw_buzzer_mode(note);
+            }
         }
-        draw_note(note);
 
-        /* Display tuning bar */
+        /* Note detection and display */
+        if (mode == 0) // Tuner mode
+        {
+            /* Find Pitch */
+            double pitch = pitch_detection(data_array);
+            if (pitch == -1)
+            {
+                /* Do not display note */
+                strcpy(note, " ");
+            }
+            else
+            {
+                /* Display detected note name */
+                note_name(pitch, note);
+            }
 
-        double max_pitch, min_pitch;
-        note_pitch_range(pitch, &max_pitch, &min_pitch);
-        int cursor_pos = 128 * (pitch - min_pitch) / (max_pitch - min_pitch);
-        draw_tuner_cursor(cursor_pos);
+            draw_tuner_lines();
+            draw_note(note);
+
+            /* Display tuning cursor */
+            double max_pitch, min_pitch;
+            note_pitch_range(pitch, &max_pitch, &min_pitch);
+            int cursor_pos = 128 * (pitch - min_pitch) / (max_pitch - min_pitch);
+            draw_tuner_cursor(cursor_pos);
+        }
     }
 }
