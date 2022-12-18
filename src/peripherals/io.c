@@ -53,6 +53,12 @@ void draw_line_v(int32_t x, int32_t y1, int32_t y2, int32_t color)
     Graphics_drawLineV(&g_sContext, x, y1, y2);
 }
 
+void draw_circle(int32_t x, int32_t y, int32_t r, int32_t color)
+{
+    Graphics_setForegroundColor(&g_sContext, color);
+    Graphics_fillCircle(&g_sContext, x, y, r);
+}
+
 void draw_string(char* string, int32_t x, int32_t y, int32_t color, int16_t centered, int16_t big)
 {
     // Clear overlapping strings

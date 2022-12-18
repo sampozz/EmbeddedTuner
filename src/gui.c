@@ -6,7 +6,13 @@ void draw_tuner_lines(void)
     draw_line_v(0, 120, 72, WHITE);
     for (i = 1; i < 64; i++)
     {
-        if (i % 4 == 0)
+        if (i == 48)
+        {
+            draw_line_v(i, 112 - (50 - i) / 3, 80 + (50 - i) / 3, BLACK);
+            draw_line_v(i, 112, 112 - (50 - i) / 3 + 1, WHITE);
+            draw_line_v(i,  80, 80 + (50 - i) / 3 - 1, WHITE);
+        }
+        else if (i % 4 == 0)
         {
             draw_line_v(i, 112 - (70 - i) / 4, 80 + (70 - i) / 4, BLACK);
             draw_line_v(i, 112, 112 - (70 - i) / 4 + 1, WHITE);
@@ -22,7 +28,13 @@ void draw_tuner_lines(void)
 
     for (i = 65; i < 128; i++)
     {
-        if (i % 4 == 0)
+        if (i == 80)
+        {
+            draw_line_v(i, 112 + (80 - i) / 3, 80 - (80 - i) / 3, BLACK);
+            draw_line_v(i, 112, 112 - (i - 80) / 3 + 1, WHITE);
+            draw_line_v(i,  80, 80 + (i - 80) / 3 - 1, WHITE);
+        }
+        else if (i % 4 == 0)
         {
             draw_line_v(i, 112 + (60 - i) / 4, 80 - (60 - i) / 4, BLACK);
             draw_line_v(i, 112, 112 - (i - 60) / 4 + 1, WHITE);
@@ -37,11 +49,7 @@ void draw_tuner_lines(void)
 
 void draw_tuner_cursor(int32_t position)
 {
-    int i = 0;
-    for (i = -2; i < 3; i++)
-    {
-        draw_line_v(position + i, 102, 90, BLUE);
-    }
+    draw_circle(position, 96, 6, BLUE);
 }
 
 void draw_reference_pitch(int32_t pitch)

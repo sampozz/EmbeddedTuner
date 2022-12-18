@@ -41,6 +41,7 @@ Graphics_Context g_sContext;
 
 void init_display(void);
 void draw_line_v(int32_t x, int32_t y1, int32_t y2, int32_t color);
+void draw_circle(int32_t x, int32_t y, int32_t r, int32_t color);
 void draw_string(char* string, int32_t x, int32_t y, int32_t color, int16_t centered, int16_t big);
 
 #endif /* _PERIPHERALS_H_ */
