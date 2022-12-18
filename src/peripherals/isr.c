@@ -6,9 +6,9 @@ extern int16_t (*data_array)[];
 extern int16_t data_array1[];
 extern int16_t data_array2[];
 
-extern int mode; // 0: tuner, 1: buzzer
+extern int16_t mode; // 0: tuner, 1: buzzer
 extern double reference_pitch;
-extern int buzzer_note_number;
+extern int16_t buzzer_note_number;
 
 /* Completion interrupt for ADC14 MEM0 */
 void DMA_INT1_IRQHandler(void)
@@ -54,7 +54,7 @@ void PORT3_IRQHandler(void)
         {
             /* Lower pitch buzzer */
             buzzer_note_number--;
-            play_buzzer();
+            play_buzzer(buzzer_note_number);
         }
     }
 }
@@ -72,7 +72,7 @@ void PORT4_IRQHandler(void)
         {
             mode = 1;
             buzzer_note_number = 0;
-            play_buzzer();
+            play_buzzer(buzzer_note_number);
         }
         else
         {
@@ -99,7 +99,7 @@ void PORT5_IRQHandler(void)
         {
             /* Higher pitch buzzer */
             buzzer_note_number++;
-            play_buzzer();
+            play_buzzer(buzzer_note_number);
         }
     }
 }

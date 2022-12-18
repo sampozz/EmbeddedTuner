@@ -10,8 +10,8 @@
 
 /* processing buffer */
 int16_t (*data_array)[SAMPLE_LENGTH];
-
-int mode = 0; // 0: tuner, 1: buzzer
+int16_t mode = 0; // 0: tuner, 1: buzzer
+int16_t buzzer_note_number = 0;
 
 extern double reference_pitch;
 
@@ -53,7 +53,7 @@ int main(void)
         double pitch = pitch_detection(data_array);
 
         draw_tuner_lines();
-        char string[20], note[3];
+        char note[3];
 
         /* Display reference pitch */
 
@@ -61,8 +61,10 @@ int main(void)
 
         /* Display note */
 
-        if (pitch == -1) continue;
         note_name(pitch, note);
+        if (pitch == -1) {
+            strcpy(note, " ");
+        }
         draw_note(note);
 
         /* Display tuning bar */

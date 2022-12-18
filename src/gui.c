@@ -52,7 +52,7 @@ void draw_reference_pitch(int32_t pitch)
 }
 
 
-void draw_note(char* note)
+void draw_note(char note[])
 {
     draw_string(note, 64, 44, BLACK, 1, 1);
 }
