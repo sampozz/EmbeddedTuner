@@ -55,7 +55,8 @@ void PORT3_IRQHandler(void)
         else
         {
             /* Lower pitch buzzer */
-            buzzer_note_number--;
+            if (--buzzer_note_number == -21)
+                buzzer_note_number = -20;
             play_buzzer(buzzer_note_number);
         }
     }
@@ -102,7 +103,8 @@ void PORT5_IRQHandler(void)
         else
         {
             /* Higher pitch buzzer */
-            buzzer_note_number++;
+            if (++buzzer_note_number == 21)
+                buzzer_note_number = 20;
             play_buzzer(buzzer_note_number);
         }
     }

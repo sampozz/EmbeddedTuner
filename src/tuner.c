@@ -39,9 +39,9 @@ int note_number(double pitch)
     return index + 0.5;
 }
 
-void play_buzzer(int note_frequency)
+void play_buzzer(int note_number)
 {
-    set_buzzer(note_pitch(note_frequency));
+    set_buzzer(note_pitch(note_number));
 }
 
 void stop_buzzer()
