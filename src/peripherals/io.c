@@ -4,7 +4,13 @@ void init_gpio(void)
 {
     /* Configuring Microphone GPIO 4.3 A10 */
     GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P4, GPIO_PIN3,
-                                               GPIO_TERTIARY_MODULE_FUNCTION);
+    GPIO_TERTIARY_MODULE_FUNCTION);
+
+    /* Configuring user button P1.1 */
+    GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN1);
+    GPIO_enableInterrupt(GPIO_PORT_P1, GPIO_PIN1);
+    GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
+    GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
 
     /* Configuring user button S1 */
     GPIO_setAsInputPin(GPIO_PORT_P5, GPIO_PIN1);
@@ -20,7 +26,7 @@ void init_gpio(void)
 
     /* Configures P2.7 to PM_TA0.4 for using Timer PWM to control the buzzer */
     GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P2, GPIO_PIN7,
-                                                GPIO_PRIMARY_MODULE_FUNCTION);
+    GPIO_PRIMARY_MODULE_FUNCTION);
 }
 
 void set_buzzer(int freq)
@@ -59,11 +65,12 @@ void draw_circle(int32_t x, int32_t y, int32_t r, int32_t color)
     Graphics_fillCircle(&g_sContext, x, y, r);
 }
 
-void draw_string(char* string, int32_t x, int32_t y, int32_t color, int16_t centered, int16_t big)
+void draw_string(char *string, int32_t x, int32_t y, int32_t color,
+                 int16_t centered, int16_t big)
 {
     // Clear overlapping strings
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-    Graphics_Rectangle rect = {0, y - 24, 128, y + 24};
+    Graphics_Rectangle rect = { 0, y - 24, 128, y + 24 };
     Graphics_fillRectangle(&g_sContext, &rect);
     Graphics_setForegroundColor(&g_sContext, color);
 
@@ -77,14 +84,13 @@ void draw_string(char* string, int32_t x, int32_t y, int32_t color, int16_t cent
     }
     if (centered)
     {
-        Graphics_drawStringCentered(&g_sContext, (int8_t *) string, AUTO_STRING_LENGTH, x, y, OPAQUE_TEXT);
+        Graphics_drawStringCentered(&g_sContext, (int8_t*) string,
+                                    AUTO_STRING_LENGTH, x, y, OPAQUE_TEXT);
     }
     else
     {
-        Graphics_drawString(&g_sContext, (int8_t *) string, AUTO_STRING_LENGTH, x, y, OPAQUE_TEXT);
+        Graphics_drawString(&g_sContext, (int8_t*) string, AUTO_STRING_LENGTH,
+                            x, y, OPAQUE_TEXT);
     }
 }
-
-
-
 

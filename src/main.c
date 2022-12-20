@@ -11,6 +11,7 @@
 /* processing buffer */
 int16_t (*data_array)[SAMPLE_LENGTH];
 int16_t mode = 0; // 0: tuner, 1: buzzer
+int16_t input = 0; // 0: mic, 1: jack
 int16_t display_updated = 1;
 int16_t buzzer_note_number = 0;
 
@@ -33,6 +34,7 @@ void _hw_init(void)
     init_display();
 
     /* Interrupts enable */
+    Interrupt_enableInterrupt(INT_PORT1);
     Interrupt_enableInterrupt(INT_PORT3);
     Interrupt_enableInterrupt(INT_PORT4);
     Interrupt_enableInterrupt(INT_PORT5);
@@ -47,7 +49,7 @@ int main(void)
     _hw_init();
     init_hann_window();
 
-    while(1)
+    while (1)
     {
         PCM_gotoLPM0();
 
@@ -59,7 +61,8 @@ int main(void)
             display_updated = 0;
             draw_reference_pitch(reference_pitch);
 
-            if (mode == 1) {
+            if (mode == 1)
+            {
                 /* Display playing note name */
                 double pitch = note_pitch(buzzer_note_number);
                 note_name(pitch, note);
@@ -89,7 +92,8 @@ int main(void)
             /* Display tuning cursor */
             double max_pitch, min_pitch;
             note_pitch_range(pitch, &max_pitch, &min_pitch);
-            int cursor_pos = 128 * (pitch - min_pitch) / (max_pitch - min_pitch);
+            int cursor_pos = 128 * (pitch - min_pitch)
+                    / (max_pitch - min_pitch);
             draw_tuner_cursor(cursor_pos);
         }
     }

@@ -60,6 +60,16 @@ void set_buzzer(int freq);
  */
 void init_adc(void);
 
+/**
+ * Set microphone ADC port to ADC MEM0
+ */
+void set_adc_microphone(void);
+
+/**
+ * Set A0 ADC port to ADC MEM0
+ */
+void set_adc_jack(void);
+
 /* DMA */
 
 #define SAMPLE_LENGTH    1024
