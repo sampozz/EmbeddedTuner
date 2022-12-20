@@ -1,3 +1,13 @@
+/**
+ * @file yin.h
+ *
+ * @brief Implementation of the Yin algorithm for pitch detection
+ *
+ * @author Ashok Fernandez
+ *
+ * @date 20/12/2022
+ */
+
 #ifndef _YIN_H_
 #define _YIN_H_
 
@@ -8,7 +18,7 @@
 
 /**
  * @struct  Yin
- * @breif	Object to encapsulate the parameters for the Yin pitch detection algorithm 
+ * @brief	Object to encapsulate the parameters for the Yin pitch detection algorithm
  */
 typedef struct _Yin {
 	int16_t bufferSize;			/**< Size of the audio buffer to be analysed */

@@ -1,3 +1,13 @@
+/**
+ * @file tuner.h
+ *
+ * @brief High level functions which implement all the utilities for the tuner
+ *
+ * @author Samuele Pozzani
+ *
+ * @date 20/12/2022
+ */
+
 #ifndef _TUNER_H_
 #define _TUNER_H_
 

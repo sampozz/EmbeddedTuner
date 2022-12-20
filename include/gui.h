@@ -1,3 +1,13 @@
+/**
+ * @file gui.h
+ *
+ * @brief High level graphics functions that could be used on any display
+ *
+ * @author Samuele Pozzani
+ *
+ * @date 20/12/2022
+ */
+
 #ifndef _GUI_H_
 #define _GUI_H_
 
