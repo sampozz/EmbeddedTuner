@@ -136,7 +136,7 @@ Embedded Tuner
 
 # Acknowledgments
 
-<a href="https://www.unitn.it/"><img src="./doc-images/unitn_logo.png" width="300px"></a>
+<a href="https://www.unitn.it/"><img src="./docs/unitn-logo.jpg" width="300px"></a>
 
 ## Copyright
 
