@@ -138,6 +138,14 @@ Embedded Tuner
 
 <a href="https://www.unitn.it/"><img src="./docs/unitn-logo.jpg" width="300px"></a>
 
+## Doxygen docs
+
+To generate Doxygen documentation, install Doxygen and execute:  
+
+```$ doxygen Doxyfile``` 
+
+HTML docs will be generated inside the `docs` folder.
+
 ## Copyright
 
 MIT Licence or otherwise specified. See [license](./LICENSE.txt) file for details.
