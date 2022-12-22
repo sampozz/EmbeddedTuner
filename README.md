@@ -133,3 +133,11 @@ Embedded Tuner
     ├───LcdDriver       # Display driver C source files
     └───peripherals     # Board-specific hardware management
 ```
+
+# Acknowledgments
+
+<a href="https://www.unitn.it/"><img src="./doc-images/unitn_logo.png" width="300px"></a>
+
+## Copyright
+
+MIT Licence or otherwise specified. See [license](./LICENSE.txt) file for details.
