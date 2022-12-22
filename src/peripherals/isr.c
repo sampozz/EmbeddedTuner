@@ -19,7 +19,7 @@ extern int16_t mode_changed;
  */
 void DMA_INT1_IRQHandler(void)
 {
-    /* Switch between primary and alternate bufferes with DMA's PingPong mode */
+    /* Switch between primary and alternate buffers with DMA's PingPong mode */
     if (DMA_getChannelAttribute(7) & UDMA_ATTR_ALTSELECT)
     {
         DMA_setChannelControl(
