@@ -16,6 +16,7 @@
 /* Colors defined as alphaRGB */
 #define BLACK 0x00000000
 #define WHITE 0x00FFFFFF
+#define GRAY 0x00666666
 #define BLUE 0x000000FF
 
 /**
@@ -46,6 +47,12 @@ void draw_note(char note[]);
  * @param note The note being played by the buzzer
  */
 void draw_buzzer_mode(char note[]);
+
+/**
+ * Draw the input name on the top right corner of the screen
+ * @param mode The input mode name
+ */
+void draw_input_mode(char mode[]);
 
 
 #endif /* _GUI_H_ */

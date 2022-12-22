@@ -11,6 +11,7 @@ extern int16_t input; // 0: mic, 1: jack
 extern double reference_pitch;
 extern int16_t buzzer_note_number;
 extern int16_t display_updated;
+extern int16_t mode_changed;
 
 /**
  * This interrupt is called whenever ADC completes the conversion of SAMPLE_LENGTH samples.
@@ -89,6 +90,7 @@ void PORT4_IRQHandler(void)
     if (status & GPIO_PIN1)
     {
         debounce_button();
+        mode_changed = 1;
         display_updated = 1;
         /* Toggle buzzer */
         if (mode == 0)
@@ -149,7 +151,7 @@ void PORT1_IRQHandler(void)
     if (status & GPIO_PIN1)
     {
         debounce_button();
-        GPIO_toggleOutputOnPin(GPIO_PORT_P1, GPIO_PIN0);
+        display_updated = 1;
         if (input == 0)
         {
             input = 1;

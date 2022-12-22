@@ -90,6 +90,11 @@ Graphics_Context g_sContext;
 void init_display(void);
 
 /**
+ * Clear display
+ */
+void clear_screen(void);
+
+/**
  * Draw a straight vertical line on the display
  * @param x The x position of the line
  * @param y1 The starting y position of the line

@@ -6,6 +6,7 @@
 #include "embedded_tuner/include/gui.h"
 #include "embedded_tuner/include/tuner.h"
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 
 /* processing buffer */
@@ -13,6 +14,7 @@ int16_t (*data_array)[SAMPLE_LENGTH];
 int16_t mode = 0; // 0: tuner, 1: buzzer
 int16_t input = 0; // 0: mic, 1: jack
 int16_t display_updated = 1;
+int16_t mode_changed = 1;
 int16_t buzzer_note_number = 0;
 
 extern double reference_pitch;
@@ -55,11 +57,16 @@ int main(void)
 
         char note[3];
 
+        if (mode_changed)
+        {
+            mode_changed = 0;
+            clear_screen();
+        }
+
         /* GUI updates on display */
         if (display_updated)
         {
             display_updated = 0;
-            draw_reference_pitch(reference_pitch);
 
             if (mode == 1)
             {
@@ -68,6 +75,16 @@ int main(void)
                 note_name(pitch, note);
                 draw_buzzer_mode(note);
             }
+            else
+            {
+                /* Display input mode */
+                if (input == 0)
+                    draw_input_mode("Mic");
+                else
+                    draw_input_mode("Jack");
+            }
+
+            draw_reference_pitch(reference_pitch);
         }
 
         /* Note detection and display */
@@ -75,26 +92,28 @@ int main(void)
         {
             /* Find Pitch */
             double pitch = pitch_detection(data_array);
-            if (pitch == -1)
+
+            draw_tuner_lines();
+
+            if (pitch == -1 || pitch > 148 && pitch < 148.8)
             {
                 /* Do not display note */
                 strcpy(note, " ");
             }
             else
             {
-                /* Display detected note name */
+                /* Display tuning cursor */
+                double max_pitch, min_pitch;
+                note_pitch_range(pitch, &max_pitch, &min_pitch);
+                int cursor_pos = 128 * (pitch - min_pitch)
+                        / (max_pitch - min_pitch);
+                draw_tuner_cursor(cursor_pos);
+
+                /* Get detected note name */
                 note_name(pitch, note);
             }
 
-            draw_tuner_lines();
             draw_note(note);
-
-            /* Display tuning cursor */
-            double max_pitch, min_pitch;
-            note_pitch_range(pitch, &max_pitch, &min_pitch);
-            int cursor_pos = 128 * (pitch - min_pitch)
-                    / (max_pitch - min_pitch);
-            draw_tuner_cursor(cursor_pos);
         }
     }
 }

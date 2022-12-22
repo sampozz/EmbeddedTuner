@@ -14,7 +14,7 @@ void draw_tuner_lines(void)
         }
         else if (i % 4 == 0)
         {
-            draw_line_v(i, 112 - (70 - i) / 4, 80 + (70 - i) / 4, BLACK);
+            draw_line_v(i, 112 - (70 - i) / 4, 80 + (70 - i) / 4, GRAY);
             draw_line_v(i, 112, 112 - (70 - i) / 4 + 1, WHITE);
             draw_line_v(i,  80, 80 + (70 - i) / 4 - 1, WHITE);
         }
@@ -36,7 +36,7 @@ void draw_tuner_lines(void)
         }
         else if (i % 4 == 0)
         {
-            draw_line_v(i, 112 + (60 - i) / 4, 80 - (60 - i) / 4, BLACK);
+            draw_line_v(i, 112 + (60 - i) / 4, 80 - (60 - i) / 4, GRAY);
             draw_line_v(i, 112, 112 - (i - 60) / 4 + 1, WHITE);
             draw_line_v(i,  80, 80 + (i - 60) / 4 - 1, WHITE);
         }
@@ -68,4 +68,9 @@ void draw_buzzer_mode(char note[])
 {
     draw_string(note, 64, 50, BLACK, 1, 1);
     draw_string("Playing buzzer", 64, 96, BLACK, 1, 0);
+}
+
+void draw_input_mode(char mode[])
+{
+    draw_string(mode, 96, 10, BLACK, 0, 0);
 }

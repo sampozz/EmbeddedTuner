@@ -23,15 +23,15 @@ void init_adc(void)
 void set_adc_microphone(void)
 {
     ADC14_disableConversion();
-    int test = ADC14_configureConversionMemory(ADC_MEM0, ADC_VREFPOS_AVCC_VREFNEG_VSS,
-                                    ADC_INPUT_A10, false);
+    while(!ADC14_configureConversionMemory(ADC_MEM0, ADC_VREFPOS_AVCC_VREFNEG_VSS,
+                                    ADC_INPUT_A10, false));
     ADC14_enableConversion();
 }
 
 void set_adc_jack(void)
 {
     ADC14_disableConversion();
-    int test = ADC14_configureConversionMemory(ADC_MEM0, ADC_VREFPOS_AVCC_VREFNEG_VSS,
-                                    ADC_INPUT_A0, false);
+    while(!ADC14_configureConversionMemory(ADC_MEM0, ADC_VREFPOS_AVCC_VREFNEG_VSS,
+                                    ADC_INPUT_A0, false));
     ADC14_enableConversion();
 }

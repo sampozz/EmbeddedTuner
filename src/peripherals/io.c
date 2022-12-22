@@ -6,11 +6,13 @@ void init_gpio(void)
     GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P4, GPIO_PIN3,
     GPIO_TERTIARY_MODULE_FUNCTION);
 
+    /* Configuring ADC for Jack input GPIO 5.5 A0 */
+    GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P5, GPIO_PIN5,
+    GPIO_TERTIARY_MODULE_FUNCTION);
+
     /* Configuring user button P1.1 */
     GPIO_setAsInputPinWithPullUpResistor(GPIO_PORT_P1, GPIO_PIN1);
     GPIO_enableInterrupt(GPIO_PORT_P1, GPIO_PIN1);
-    GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
-    GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
 
     /* Configuring user button S1 */
     GPIO_setAsInputPin(GPIO_PORT_P5, GPIO_PIN1);
@@ -65,12 +67,17 @@ void draw_circle(int32_t x, int32_t y, int32_t r, int32_t color)
     Graphics_fillCircle(&g_sContext, x, y, r);
 }
 
+void clear_screen(void)
+{
+    Graphics_clearDisplay(&g_sContext);
+}
+
 void draw_string(char *string, int32_t x, int32_t y, int32_t color,
                  int16_t centered, int16_t big)
 {
     // Clear overlapping strings
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-    Graphics_Rectangle rect = { 0, y - 24, 128, y + 24 };
+    Graphics_Rectangle rect = { x - 24, y - 24, x + 24, y + 24 };
     Graphics_fillRectangle(&g_sContext, &rect);
     Graphics_setForegroundColor(&g_sContext, color);
 
