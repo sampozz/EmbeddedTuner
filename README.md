@@ -5,7 +5,7 @@ Embedded Tuner is a musical tuner which can be used to tune any kind of acoustic
 ## Features
 
 The following features have been implemented and tested on the board.
-- Check pitch detection output on display with a precision-scale tuning cursor.
+- View pitch detection output on display with a precision-scale tuning cursor.
 - Tune acoustic instruments or voice using microphone input.
 - Tune electric instruments using jack input.
 - Enable the buzzer pressing joystick button and select the note you want to hear using user buttons.   
@@ -52,7 +52,7 @@ As described by Anssi Klapuri in his book "Signal Processing Methods for Music T
 
 A Pitch Detection Algorithm (PDA) is an algorithm designed to estimate the pitch of a quasi-periodic or oscillating signal. In this project, two different algorithms have been tested:
 
-- [Harmonic Product Spectrum](http://musicweb.ucsd.edu/~trsmyth/analysis/Harmonic_Product_Spectrum.html) (HPS) designed by Noll in 1969, which analyzes the audio signal in the frequency domain, therefore the [ARM CMSIS DSP](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) FFT function is used. The implementation is very simple but it proved to have inadequate performance.
+- [Harmonic Product Spectrum](http://musicweb.ucsd.edu/~trsmyth/analysis/Harmonic_Product_Spectrum.html) (HPS) designed by Noll in 1969, which analyzes the audio signal in the frequency domain, therefore the [ARM CMSIS DSP](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) FFT function was used. The implementation was very simple but it proved to have inadequate performance.
 - [Yin Algorithm](http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf) developed by Cheveigne and Kawahara in 2001, which is much more complex but computes the pitch estimation in the time domain. The C implementation can be found on [GitHub](https://github.com/ashokfernandez/Yin-Pitch-Tracking), thanks to [Ashok Fernandez](https://github.com/ashokfernandez/). A nice explanation of this algorithm is on [YouTube](https://www.youtube.com/watch?v=W585xR3bjLM).   
 
 Yin Algorithm ended up outperforming HPS (in terms of accuracy), therefore it was chosen for the implementation. 
@@ -63,7 +63,7 @@ Completely destroying every artistic and romantic aspects, it is safe to say tha
 
 Jumping over [centuries of music hystory](https://en.wikipedia.org/wiki/Concert_pitch), in 1939 the International Organization for Standardization (ISO) defined the note A4 to be tuned to 440 Hz, now known as **concert pitch**. This pitch is the default reference pitch for the Embedded Tuner. Different modern symphony orchestras around the world are used to tune A4 differently, for instance 443 Hz in Russia or 442 Hz in Europe. For this reason, the Embedded Tuner allows the user to select the desired reference pitch.
 
-The [note-naming convention](https://en.wikipedia.org/wiki/Musical_note) specifies a letter, sharps/flats, and an octave number. Any note is an integer away from middle A (A4): let this distane be denoted by n (or *note number*). If the note is above A4, then n is positive; if it is below A4, the n is negative. The frequency f of the note n is then:
+The [note-naming convention](https://en.wikipedia.org/wiki/Musical_note) specifies a letter, sharps/flats, and an octave number. Any note is an integer away from middle A (A4): let this distane be denoted by n (or *note number*). If the note is above A4, then n is positive; if it is below A4, then n is negative. The frequency f of the note n is then:
 
 $$ f = 2^{n \over 12} \cdot 440 \textrm{ Hz} $$
 
@@ -77,8 +77,8 @@ ADC keeps sampling data at 16 kHz and stores it in ADC MEM0 region (16 bits), on
 
 ## Buzzer
 
-The buzzer is an electrical audio signaling device which can output a musical note based on "how many times per second it is played". It is possible to create a vibration (therefore a note) at a certain frequency very easily by controlling the buzzer with a system timer.  
-In this project the MSP432 Timer_A0 is configured at 48 MHz in PWM mode. A divider of 64 is selected to deal with an actual timer of 48 MHz / 64 = 750 kHz. Then the PWM period register is configured so that when the timer reaches the value stored in that register the buzzer makes a single vibration. To play an A4 at 440 Hz, we want the buzzer to make 440 vibrations every second. In this case, we just need to store the value 750 kHz / 440 Hz = 1704 ticks to produce the desired note.
+The buzzer is an electrical audio signaling device which can output a musical note based on "how many times per second it vibrates". It is possible to create a vibration (therefore a note) at a certain frequency very easily by controlling the buzzer with a system timer.  
+In this project the MSP432 Timer_A0 is configured at 48 MHz in PWM mode. A divider of 64 is selected to deal with an actual timer of 48 MHz / 64 = 750 kHz. Then the PWM period register is configured so that, when the timer reaches the value stored in that register, the buzzer makes a single vibration. To play an A4 at 440 Hz, the buzzer has to make 440 vibrations every second. In this case, the value 750 kHz / 440 Hz = 1704 ticks is stored into the period register to produce the desired note.
 
 ```C
 /* file: src/peripherals/timers.c */
@@ -142,7 +142,9 @@ Embedded Tuner
 
 To generate Doxygen documentation, install Doxygen and execute:  
 
-```$ doxygen Doxyfile``` 
+```bash
+$ doxygen Doxyfile
+``` 
 
 HTML docs will be generated inside the `docs` folder.
 
