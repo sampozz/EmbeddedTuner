@@ -118,9 +118,17 @@ void draw_circle(int32_t x, int32_t y, int32_t r, int32_t color);
  * @param x The x starting position
  * @param y The y starting position
  * @param color The color of the string in the format aRGB (32 bit)
- * @param centered If true, the params (x, y) represent the center of the string, otherwise the top left corner
- * @param big If True, set a big font
  */
-void draw_string(char* string, int32_t x, int32_t y, int32_t color, int16_t centered, int16_t big);
+void draw_string(char* string, int32_t x, int32_t y, int32_t color);
+
+
+/**
+ * Draw a string on the display with a big font size
+ * @param string The string buffer
+ * @param x The x center position
+ * @param y The y center position
+ * @param color The color of the string in the format aRGB (32 bit)
+ */
+void draw_string_big(char* string, int32_t x, int32_t y, int32_t color);
 
 #endif /* _PERIPHERALS_H_ */

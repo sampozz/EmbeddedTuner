@@ -72,32 +72,33 @@ void clear_screen(void)
     Graphics_clearDisplay(&g_sContext);
 }
 
-void draw_string(char *string, int32_t x, int32_t y, int32_t color,
-                 int16_t centered, int16_t big)
+void draw_string(char *string, int32_t x, int32_t y, int32_t color)
 {
-    // Clear overlapping strings
+    /* Clear overlapping strings */
+    Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
+    Graphics_Rectangle rect = { x - 24, y - 10, x + 24, y + 10 };
+    Graphics_fillRectangle(&g_sContext, &rect);
+    Graphics_setForegroundColor(&g_sContext, color);
+
+    /* Draw string */
+    GrContextFontSet(&g_sContext, &g_sFontFixed6x8);
+    Graphics_drawString(&g_sContext, (int8_t*) string, AUTO_STRING_LENGTH, x, y,
+    OPAQUE_TEXT);
+
+}
+
+void draw_string_big(char *string, int32_t x, int32_t y, int32_t color)
+{
+    /* Clear overlapping strings */
     Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
     Graphics_Rectangle rect = { x - 24, y - 24, x + 24, y + 24 };
     Graphics_fillRectangle(&g_sContext, &rect);
     Graphics_setForegroundColor(&g_sContext, color);
 
-    if (big)
-    {
-        GrContextFontSet(&g_sContext, &g_sFontCmss24);
-    }
-    else
-    {
-        GrContextFontSet(&g_sContext, &g_sFontFixed6x8);
-    }
-    if (centered)
-    {
-        Graphics_drawStringCentered(&g_sContext, (int8_t*) string,
-                                    AUTO_STRING_LENGTH, x, y, OPAQUE_TEXT);
-    }
-    else
-    {
-        Graphics_drawString(&g_sContext, (int8_t*) string, AUTO_STRING_LENGTH,
-                            x, y, OPAQUE_TEXT);
-    }
+    /* Draw string */
+    GrContextFontSet(&g_sContext, &g_sFontCmss24);
+    Graphics_drawStringCentered(&g_sContext, (int8_t*) string,
+                                AUTO_STRING_LENGTH, x, y, OPAQUE_TEXT);
+
 }
 

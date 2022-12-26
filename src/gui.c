@@ -56,21 +56,21 @@ void draw_reference_pitch(int32_t pitch)
 {
     char string[20];
     sprintf(string, "%d Hz", (int)pitch);
-    draw_string(string, 10, 10, BLACK, 0, 0);
+    draw_string(string, 10, 10, BLACK);
 }
 
 void draw_note(char note[])
 {
-    draw_string(note, 64, 44, BLACK, 1, 1);
+    draw_string_big(note, 64, 44, BLACK);
 }
 
 void draw_buzzer_mode(char note[])
 {
-    draw_string(note, 64, 50, BLACK, 1, 1);
-    draw_string("Playing buzzer", 64, 96, BLACK, 1, 0);
+    draw_string_big(note, 64, 50, BLACK);
+    draw_string("Playing buzzer", 22, 96, BLACK);
 }
 
 void draw_input_mode(char mode[])
 {
-    draw_string(mode, 96, 10, BLACK, 0, 0);
+    draw_string(mode, 96, 10, BLACK);
 }

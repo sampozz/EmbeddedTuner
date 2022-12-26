@@ -23,7 +23,7 @@ void init_adc(void)
 
     ADC14_setSampleHoldTrigger(ADC_TRIGGER_SOURCE3, false);
 
-    /* Configuring ADC Memory */
+    /* Configuring ADC Memory with microphone */
     ADC14_configureSingleSampleMode(ADC_MEM0, true);
     ADC14_configureConversionMemory(ADC_MEM0, ADC_VREFPOS_AVCC_VREFNEG_VSS,
                                     ADC_INPUT_A10, false);
