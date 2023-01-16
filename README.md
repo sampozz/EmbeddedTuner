@@ -11,9 +11,15 @@ The following features have been implemented and tested on the board.
 - Enable the buzzer pressing joystick button and select the note you want to hear using user buttons.   
 - Select the desired reference pitch using user buttons (this also changes the buzzer pitch).     
 
+## Demo
+
+A video demonstration of the project is available on [YouTube](https://www.youtube.com/watch?v=kokgFW1Ngh8).
+
 ## Authors
 
-Samuele Pozzani, Enea Strambini, Luca Landolfo.
+Samuele Pozzani - Software development, video <br />
+Enea Strambini - 3D printing, testing, presentation <br />
+Luca Landolfo - Support
 
 # Requirements
 
