@@ -2,6 +2,8 @@
 
 Embedded Tuner is a musical tuner which can be used to tune any kind of acoustic or electric musical instruments. It analyzes the audio signal from the microphone or the input jack, detects the pitch and shows the corresponding note on the display. It can also play any desired note with the buzzer to check the intonation by ear. 
 
+<a href="https://www.unitn.it/"><img src="./docs/tuner.jpeg" width="400px"></a>
+
 ## Features
 
 The following features have been implemented and tested on the board.
