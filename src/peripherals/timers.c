@@ -15,7 +15,7 @@ const Timer_A_PWMConfig buzzer_pwmConfig =
 {
     TIMER_A_CLOCKSOURCE_SMCLK,     // SMCLK = 48 MHz
     TIMER_A_CLOCKSOURCE_DIVIDER_64, // SMCLK / 64 = 750 kHz
-    0,
+    0,                              // Period register, set to desired note
     TIMER_A_CAPTURECOMPARE_REGISTER_4,
     TIMER_A_OUTPUTMODE_TOGGLE_SET,
     500

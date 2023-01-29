@@ -22,6 +22,7 @@ void DMA_INT1_IRQHandler(void)
     /* Switch between primary and alternate buffers with DMA's PingPong mode */
     if (DMA_getChannelAttribute(7) & UDMA_ATTR_ALTSELECT)
     {
+        /* Finished sampling on data_array2, continue on data_array1 */
         DMA_setChannelControl(
         UDMA_PRI_SELECT | DMA_CH7_ADC14,
                               UDMA_SIZE_16 | UDMA_SRC_INC_NONE |
@@ -30,10 +31,11 @@ void DMA_INT1_IRQHandler(void)
         UDMA_MODE_PINGPONG,
                                (void*) &ADC14->MEM[0], data_array1,
                                SAMPLE_LENGTH);
-        data_array = &data_array1;
+        data_array = &data_array2;
     }
     else
     {
+        /* Finished sampling on data_array1, continue on data_array2 */
         DMA_setChannelControl(
         UDMA_ALT_SELECT | DMA_CH7_ADC14,
                               UDMA_SIZE_16 | UDMA_SRC_INC_NONE |
@@ -42,7 +44,7 @@ void DMA_INT1_IRQHandler(void)
         UDMA_MODE_PINGPONG,
                                (void*) &ADC14->MEM[0], data_array2,
                                SAMPLE_LENGTH);
-        data_array = &data_array2;
+        data_array = &data_array1;
     }
 }
 
