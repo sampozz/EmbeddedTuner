@@ -20,13 +20,14 @@
  * @struct  Yin
  * @brief	Object to encapsulate the parameters for the Yin pitch detection algorithm
  */
-typedef struct _Yin {
-	int16_t bufferSize;			/**< Size of the audio buffer to be analysed */
-	int16_t halfBufferSize;		/**< Half the buffer length */
-	int16_t sample_frequency;
-	float yinBuffer[SAMPLE_LENGTH / 2];		/**< Buffer that stores the results of the intermediate processing steps of the algorithm */
-	float probability;		/**< Probability that the pitch found is correct as a decimal (i.e 0.85 is 85%) */
-	float threshold;		/**< Allowed uncertainty in the result as a decimal (i.e 0.15 is 15%) */
+typedef struct _Yin
+{
+    int16_t bufferSize; /**< Size of the audio buffer to be analysed */
+    int16_t halfBufferSize; /**< Half the buffer length */
+    int16_t sample_frequency;
+    float yinBuffer[SAMPLE_LENGTH / 2]; /**< Buffer that stores the results of the intermediate processing steps of the algorithm */
+    float probability; /**< Probability that the pitch found is correct as a decimal (i.e 0.85 is 85%) */
+    float threshold; /**< Allowed uncertainty in the result as a decimal (i.e 0.15 is 15%) */
 } Yin;
 
 /**
@@ -35,7 +36,8 @@ typedef struct _Yin {
  * @param bufferSize Length of the audio buffer to analyse
  * @param threshold  Allowed uncertainty (e.g 0.05 will return a pitch with ~95% probability)
  */
-void Yin_init(Yin *yin, int16_t bufferSize, int16_t sample_frequency, float threshold);
+void Yin_init(Yin *yin, int16_t bufferSize, int16_t sample_frequency,
+              float threshold);
 
 /**
  * Runs the Yin pitch detection algortihm
@@ -43,7 +45,7 @@ void Yin_init(Yin *yin, int16_t bufferSize, int16_t sample_frequency, float thre
  * @param  buffer Buffer of samples to analyse
  * @return        Fundamental frequency of the signal in Hz. Returns -1 if pitch can't be found
  */
-float Yin_getPitch(Yin *yin, int16_t* buffer);
+float Yin_getPitch(Yin *yin, int16_t *buffer);
 
 /**
  * Certainty of the pitch found 
@@ -51,7 +53,5 @@ float Yin_getPitch(Yin *yin, int16_t* buffer);
  * @return     Returns the certainty of the note found as a decimal (i.e 0.3 is 30%)
  */
 float Yin_getProbability(Yin *yin);
-	
-
 
 #endif
